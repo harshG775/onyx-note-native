@@ -1,5 +1,34 @@
 import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import "react-native-reanimated";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
+import { ThemeModeProvider, useThemeModeContext } from "@/components/contexts/theme-mode-provider";
+import { ThemeProvider } from "@/components/contexts/theme-provider";
+
+export const unstable_settings = {
+    anchor: "(tabs)",
+};
 export default function RootLayout() {
-  return <Stack />;
+    return (
+        <SafeAreaProvider>
+            <ThemeModeProvider>
+                <ThemeProvider>
+                    <Stack
+                        screenOptions={{
+                            animation: "fade_from_bottom",
+                        }}
+                    >
+                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                    </Stack>
+                    <StatusBar_ />
+                </ThemeProvider>
+            </ThemeModeProvider>
+        </SafeAreaProvider>
+    );
+}
+function StatusBar_() {
+    const { mode } = useThemeModeContext();
+
+    return <StatusBar style={mode === "dark" ? "light" : "dark"} />;
 }
